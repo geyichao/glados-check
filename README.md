@@ -26,7 +26,6 @@
 >
 > GitHub Actions 的自带定时功能很不稳定，实测大概率不会自动触发。
 >
-> **别担心！** 配置 cron-job.org 只需要额外 5 分钟，一次搞定永久有效。
 ---
 
 ## ✨ 功能特点
@@ -49,7 +48,7 @@
 | `GLADOS_COOKIE`      | ✅ 是 | GLaDOS 的 Cookie。多个账号请用 `&` 或换行符分隔。                          |
 | `TELEGRAM_BOT_TOKEN` | ❌ 否 | Telegram 机器人的 Token（例如 `123456:ABC-DEF1234...`）                    |
 | `TELEGRAM_CHAT_ID`   | ❌ 否 | 接收推送的 Telegram Chat ID                                                |
-| `PUSH_LEVEL`         | ❌ 否 | 推送级别：`all` (默认，每次均推送) 或 `fail_only` (仅有账号签到失败时推送) |
+| `GLADOS_EXCHANGE_PLAN`         | ❌ 否 | 配置自动兑换积分策略 |
 
 ---
 
