@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-2026 GLaDOS 自动签到 (排版修复终极版 - 补全信息+全行空行)
+2026 GLaDOS 自动签到 (排版修复终极版 - 补全信息+全行空行+话术统一)
 """
 
 import requests
@@ -167,27 +167,33 @@ def main():
     
     for cookie in cookies:
         g = GLaDOS(cookie)
-        g.checkin()
+        checkin_res = g.checkin()
         g.get_status()
         g.get_points()
         
+        # 话术处理：如果已经签到过，统一输出长话术
+        raw_msg = checkin_res.get('message', 'Failure') if checkin_res else "Network Error"
+        if "observation logged" in raw_msg:
+            msg = "Today's observation logged. Return tomorrow for more points."
+        else:
+            msg = raw_msg
+
         current_pts = int(g.points)
         exchange_msg = f"积分不足 ({current_pts}/{need_pts})"
         if current_pts >= need_pts:
             ex_res = g.exchange(target_plan)
             exchange_msg = ex_res.get('message', '提交失败')
-            # 兑换后更新状态
             g.get_status()
             g.get_points()
 
         success_cnt += 1
         
-        # 精确每一行之间留一行空行 (\n\n)
+        # 全行空行排版
         user_result = (
             f"👤 {g.email}\n\n"
             f"当前积分: {g.points} ({g.points_change})\n\n"
             f"剩余天数: {g.left_days} 天\n\n"
-            f"签到结果: Today's observation logged.\n\n"
+            f"签到结果: {msg}\n\n"
             f"自动兑换: {exchange_msg}\n\n"
             f"🎁 兑换选项:\n\n"
             f"{g.exchange_info}"
@@ -200,7 +206,6 @@ def main():
     if tg_token and tg_chat_id:
         title = f"GLaDOS签到: 成功{success_cnt}/{len(cookies)}"
         cur_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        # 结尾补上策略和时间，并保持空行间距
         content = "\n\n".join(results) + f"\n\n策略: {target_plan} | 时间: {cur_time}"
         telegram_push(tg_token, tg_chat_id, title, content)
 
