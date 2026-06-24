@@ -1,12 +1,10 @@
 name: GLaDOS  Checkin
 
 on:
-    workflow_dispatch:  # 允许手动触发
-on:
     workflow_dispatch:
 
     schedule:
-     - cron: '0 0 * * *'
+     - cron: '0 10 * * *'
 jobs:
   checkin:
     runs-on: ubuntu-latest
