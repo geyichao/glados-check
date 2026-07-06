@@ -5,6 +5,8 @@ on:
 
     schedule:
      - cron: '0 14 * * *'
+     - cron: '0 8 * * *'
+     - cron: '0 20 * * *'
 jobs:
   checkin:
     runs-on: ubuntu-latest
